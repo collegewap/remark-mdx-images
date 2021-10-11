@@ -1,7 +1,7 @@
 {
-  "name": "remark-mdx-images",
-  "version": "1.0.3",
-  "description": "A remark plugin for changing image sources to JavaScript imports using MDX",
+  "name": "remark-mdx-images-enhanced",
+  "version": "1.0.4",
+  "description": "A remark plugin for changing image sources to JavaScript imports using MDX and adding width and height",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -11,16 +11,16 @@
     "test": "ts-node index.test.mjs",
     "prepack": "tsc --project tsconfig.build.json"
   },
-  "author": "Remco Haszing <remcohaszing@gmail.com>",
+  "author": "Remco Haszing <remcohaszing@gmail.com>, Abhishek EH <collegewap@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/remcohaszing/remark-mdx-images.git"
+    "url": "git+https://github.com/collegewap/remark-mdx-images.git"
   },
   "bugs": {
-    "url": "https://github.com/remcohaszing/remark-mdx-images/issues"
+    "url": "https://github.com/collegewap/remark-mdx-images/issues"
   },
-  "homepage": "https://github.com/remcohaszing/remark-mdx-images#readme",
+  "homepage": "https://github.com/collegewap/remark-mdx-images#readme",
   "keywords": [
     "markdown",
     "mdast",
@@ -34,6 +34,7 @@
     "node": ">=12.2.0"
   },
   "dependencies": {
+    "image-size": "^1.0.0",
     "unist-util-visit": "^2.0.0"
   },
   "devDependencies": {

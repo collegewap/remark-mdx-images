@@ -3,7 +3,8 @@ import { Image } from 'mdast';
 import { Plugin } from 'unified';
 import { Parent } from 'unist';
 import * as visit from 'unist-util-visit';
-
+const sizeOf = require('image-size');
+const path = require('path');
 export interface RemarkMdxImagesOptions {
   /**
    * By default imports are resolved relative to the markdown file. This matches default markdown
@@ -14,6 +15,10 @@ export interface RemarkMdxImagesOptions {
    * @default true
    */
   resolve?: boolean;
+  /**
+   * Directory where the image is stored
+   */
+  dir?: string;
 }
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
@@ -24,7 +29,7 @@ const relativePathPattern = /\.\.?\//;
  * A Remark plugin for converting Markdown images to MDX images using imports for the image source.
  */
 export const remarkMdxImages: Plugin<[RemarkMdxImagesOptions?]> =
-  ({ resolve = true } = {}) =>
+  ({ resolve = true, dir = '' } = {}) =>
   (ast) => {
     const imports: Omit<MDXEsm, 'value'>[] = [];
     const imported = new Map<string, string>();
@@ -93,6 +98,22 @@ export const remarkMdxImages: Plugin<[RemarkMdxImagesOptions?]> =
       if (title) {
         textElement.attributes.push({ type: 'mdxJsxAttribute', name: 'title', value: title });
       }
+      try {
+        const dimensions = sizeOf(path.join(dir, url));
+        textElement.attributes.push({
+          type: 'mdxJsxAttribute',
+          name: 'width',
+          value: dimensions.width,
+        });
+        textElement.attributes.push({
+          type: 'mdxJsxAttribute',
+          name: 'height',
+          value: dimensions.height,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+
       (parent as Parent).children.splice(index, 1, textElement);
     });
     (ast as Parent).children.unshift(...imports);
